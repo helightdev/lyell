@@ -218,8 +218,7 @@ abstract class TypeStringifier {
     if (reader.isString) return "'${sqsLiteralEscape(reader.stringValue)}'";
 
     if (reader.isSymbol) {
-      final symbolString = reader.symbolValue.toString();
-      final name = symbolString.substring(8, symbolString.length - 2);
+      final name = reader.objectValue.toSymbolValue();
       return "#$name";
     }
     if (reader.isType) return get(reader.typeValue);
