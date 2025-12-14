@@ -1,5 +1,3 @@
-import 'dart:mirrors';
-
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element2.dart';
 import 'package:analyzer/dart/element/type.dart' as analyzer_type;
@@ -219,7 +217,10 @@ abstract class TypeStringifier {
     if (reader.isBool) return reader.boolValue.toString();
     if (reader.isString) return "'${sqsLiteralEscape(reader.stringValue)}'";
 
-    if (reader.isSymbol) return "#${MirrorSystem.getName(reader.symbolValue)}";
+    if (reader.isSymbol) {
+      final name = reader.objectValue.toSymbolValue();
+      return "#$name";
+    }
     if (reader.isType) return get(reader.typeValue);
     if (object.variable2 != null) {
       var variable = object.variable2!;
