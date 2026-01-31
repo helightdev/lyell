@@ -1,3 +1,38 @@
+## 4.0.0
+
+> Note: This release has breaking changes.
+
+ - **REFACTOR**: Update to build 4.0.0.
+ - **REFACTOR**: clean up code and remove unused imports.
+ - **REFACTOR**: downgrade and switch to element2 compatibility.
+ - **REFACTOR**: migrate to the new element model and remove dependency version ranges.
+ - **REFACTOR**: remove unused imports and fix alias naming.
+ - **REFACTOR**: update CachedAliasCounter and fixed get(void).
+ - **REFACTOR**: add clarifying brackets.
+ - **REFACTOR**: reformat code.
+ - **FIX**: reformat code, fix missing translations, update linter ignores.
+ - **FIX**: downgrade analyzer and source_gen dependencies for compatibility.
+ - **FIX**: header colliding with code because of missing newlines.
+ - **FIX**: fix support for enums, by using InterfaceElement instead of ClassElement.
+ - **FIX**: support named constructors.
+ - **FIX**: edge-cases where top level functions aren't resolved correctly.
+ - **FIX**: handle strings with content that requires escapes.
+ - **FIX**: remove UnsupportedError for now implemented feature.
+ - **FIX**: use the right element library.
+ - **FIX**: improve const getter based annotation handling in toSource().
+ - **FIX**: descriptor uri now points towards the generated file, not the source file.
+ - **FIX**: add missing return clauses.
+ - **FEAT**: add header for generated files.
+ - **FEAT**: handle functions in toSource.
+ - **FEAT**: handle variable references in toSource.
+ - **FEAT**: add getLibraryAlias.
+ - **FEAT**: add and use qualified trees.
+ - **FEAT**: add TypeTrees.
+ - **FEAT**: improve alias capabilities.
+ - **BREAKING** **REFACTOR**: actually update to the newest analyzer version, I should have done that a long time ago.
+ - **BREAKING** **REFACTOR**: fix naming, add qol features.
+ - **BREAKING** **FEAT**: add library proxies for extensible imports, add locks to tryInitialize, add serialize.
+
 ## 3.0.12
 
  - **REFACTOR**: clean up code and remove unused imports.

@@ -3,6 +3,78 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2026-01-31
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - [`lyell_gen` - `v4.0.0`](#lyell_gen---v400)
+
+Packages with other changes:
+
+ - [`lyell` - `v1.5.0`](#lyell---v150)
+
+---
+
+#### `lyell_gen` - `v4.0.0`
+
+ - **REFACTOR**: Update to build 4.0.0.
+ - **REFACTOR**: clean up code and remove unused imports.
+ - **REFACTOR**: downgrade and switch to element2 compatibility.
+ - **REFACTOR**: migrate to the new element model and remove dependency version ranges.
+ - **REFACTOR**: remove unused imports and fix alias naming.
+ - **REFACTOR**: update CachedAliasCounter and fixed get(void).
+ - **REFACTOR**: add clarifying brackets.
+ - **REFACTOR**: reformat code.
+ - **FIX**: reformat code, fix missing translations, update linter ignores.
+ - **FIX**: downgrade analyzer and source_gen dependencies for compatibility.
+ - **FIX**: header colliding with code because of missing newlines.
+ - **FIX**: fix support for enums, by using InterfaceElement instead of ClassElement.
+ - **FIX**: support named constructors.
+ - **FIX**: edge-cases where top level functions aren't resolved correctly.
+ - **FIX**: handle strings with content that requires escapes.
+ - **FIX**: remove UnsupportedError for now implemented feature.
+ - **FIX**: use the right element library.
+ - **FIX**: improve const getter based annotation handling in toSource().
+ - **FIX**: descriptor uri now points towards the generated file, not the source file.
+ - **FIX**: add missing return clauses.
+ - **FEAT**: add header for generated files.
+ - **FEAT**: handle functions in toSource.
+ - **FEAT**: handle variable references in toSource.
+ - **FEAT**: add getLibraryAlias.
+ - **FEAT**: add and use qualified trees.
+ - **FEAT**: add TypeTrees.
+ - **FEAT**: improve alias capabilities.
+ - **BREAKING** **REFACTOR**: actually update to the newest analyzer version, I should have done that a long time ago.
+ - **BREAKING** **REFACTOR**: fix naming, add qol features.
+ - **BREAKING** **FEAT**: add library proxies for extensible imports, add locks to tryInitialize, add serialize.
+
+#### `lyell` - `v1.5.0`
+
+ - **REFACTOR**: Update to build 4.0.0.
+ - **REFACTOR**: clean up code and remove unused imports.
+ - **REFACTOR**: migrate to the new element model and remove dependency version ranges.
+ - **REFACTOR**: enhance QualifiedTypeTree implementation and improve equality checks.
+ - **FIX**: reformat code, fix missing translations, update linter ignores.
+ - **FIX**: revert unsafe runtime type to not extend QualifiedTypeTree, since it broke plugins who mapped to qualified types. Same goes for synthetic types.
+ - **FIX**: naming for unsafe runtime types now works properly, and base getters return clones without arguments for both unsafe runtime captures and synthetic types.
+ - **FIX**: hashing for unsafe runtime type capture and proper equality checks.
+ - **FIX**: Synthetic Type Capture didn't return itself as base.
+ - **FIX**: I forgot to add the arguments as a constructor parameter.
+ - **FIX**: implement type tree for unsafe runtime type capture for easy usage.
+ - **FEAT**: improve type capture methods and add SyntheticTypeCapture class.
+ - **FEAT**: add UnsafeRuntimeTypeCapture for limited runtime type support.
+ - **FEAT**: add additional extensions for handling not qualified type trees.
+ - **FEAT**: terminal and primitive type tree factory methods return qualified type tress now.
+ - **FEAT**: add and use qualified trees.
+ - **FEAT**: add TypeTrees.
+ - **FEAT**: add collection casts.
+ - **FEAT**: improve alias capabilities.
+
+
 ## 2025-09-02
 
 ### Changes

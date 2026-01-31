@@ -1,3 +1,25 @@
+## 1.5.0
+
+ - **REFACTOR**: Update to build 4.0.0.
+ - **REFACTOR**: clean up code and remove unused imports.
+ - **REFACTOR**: migrate to the new element model and remove dependency version ranges.
+ - **REFACTOR**: enhance QualifiedTypeTree implementation and improve equality checks.
+ - **FIX**: reformat code, fix missing translations, update linter ignores.
+ - **FIX**: revert unsafe runtime type to not extend QualifiedTypeTree, since it broke plugins who mapped to qualified types. Same goes for synthetic types.
+ - **FIX**: naming for unsafe runtime types now works properly, and base getters return clones without arguments for both unsafe runtime captures and synthetic types.
+ - **FIX**: hashing for unsafe runtime type capture and proper equality checks.
+ - **FIX**: Synthetic Type Capture didn't return itself as base.
+ - **FIX**: I forgot to add the arguments as a constructor parameter.
+ - **FIX**: implement type tree for unsafe runtime type capture for easy usage.
+ - **FEAT**: improve type capture methods and add SyntheticTypeCapture class.
+ - **FEAT**: add UnsafeRuntimeTypeCapture for limited runtime type support.
+ - **FEAT**: add additional extensions for handling not qualified type trees.
+ - **FEAT**: terminal and primitive type tree factory methods return qualified type tress now.
+ - **FEAT**: add and use qualified trees.
+ - **FEAT**: add TypeTrees.
+ - **FEAT**: add collection casts.
+ - **FEAT**: improve alias capabilities.
+
 ## 1.4.6
 
  - **REFACTOR**: clean up code and remove unused imports.
