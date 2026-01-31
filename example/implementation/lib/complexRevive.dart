@@ -1,5 +1,5 @@
-import 'package:implementation/thirdFile.dart';
 import 'package:lyell/lyell.dart';
+import 'thirdFile.dart';
 
 class ComplexConst implements RetainedAnnotation {
   final Object val;

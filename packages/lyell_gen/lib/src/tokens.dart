@@ -60,7 +60,7 @@ Future<GeneratedAssociatedItemTypeToken> getAssociatedTypeToken(
 GeneratedTypeTree getTypeTree(DartType type) {
   if (type is InterfaceType && type.typeArguments.isNotEmpty) {
     var neutralTypeArgs = <DartType>[];
-    for (var element in type.element3.typeParameters2) {
+    for (var element in type.element.typeParameters) {
       if (element.bound == null) {
         neutralTypeArgs.add(coreLibraryReader.element.typeProvider.dynamicType);
       } else {
@@ -69,7 +69,7 @@ GeneratedTypeTree getTypeTree(DartType type) {
     }
     return GeneratedTypeTree(
         type,
-        type.element3.instantiate(
+        type.element.instantiate(
             typeArguments: neutralTypeArgs,
             nullabilitySuffix: NullabilitySuffix.none),
         type.typeArguments.map((e) => getTypeTree(e)).toList());

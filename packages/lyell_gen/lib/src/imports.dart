@@ -1,7 +1,5 @@
-import 'dart:mirrors';
-
 import 'package:analyzer/dart/constant/value.dart';
-import 'package:analyzer/dart/element/element2.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart' as analyzer_type;
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
@@ -26,7 +24,7 @@ class AliasImport {
     return AliasImport(type.import!, alias);
   }
 
-  factory AliasImport.library(LibraryElement2 element, [String? alias]) {
+  factory AliasImport.library(LibraryElement element, [String? alias]) {
     return AliasImport(element.firstFragment.source.uri.toString(), alias);
   }
 
@@ -58,15 +56,15 @@ String getWidestImport(DartType type) {
 /// Utility for creating a non partial augmentation class for the give asset [id]
 /// with the [library]. The [additional] imports are also added to the the import
 /// string.
-String getImportString(LibraryElement2? library, AssetId? id,
+String getImportString(LibraryElement? library, AssetId? id,
     [List<AliasImport> additional = const []]) {
   Set<AliasImport> importValues = <AliasImport>{};
   importValues.addAll(additional);
   if (id != null) importValues.add(AliasImport.root(id.uri.toString()));
   if (library != null) {
-    for (var element in library.firstFragment.libraryImports2) {
-      importValues.add(AliasImport(element.importedLibrary2!.uri.toString(),
-          element.prefix2?.element.displayName));
+    for (var element in library.firstFragment.libraryImports) {
+      importValues.add(AliasImport(element.importedLibrary!.uri.toString(),
+          element.prefix?.element.displayName));
     }
   }
   return importValues.map((e) => e.code).join("\n");
@@ -74,7 +72,7 @@ String getImportString(LibraryElement2? library, AssetId? id,
 
 /// Utility for creating a import sections of dart files.
 String createImports(
-    {LibraryElement2? library,
+    {LibraryElement? library,
     AssetId? id,
     List<AliasImport>? imports,
     bool includeDartCore = true}) {
@@ -83,9 +81,9 @@ String createImports(
   if (imports != null) importValues.addAll(imports);
   if (id != null) importValues.add(AliasImport.root(id.uri.toString()));
   if (library != null) {
-    for (var element in library.firstFragment.libraryImports2) {
-      importValues.add(AliasImport(element.importedLibrary2!.uri.toString(),
-          element.prefix2?.element.displayName));
+    for (var element in library.firstFragment.libraryImports) {
+      importValues.add(AliasImport(element.importedLibrary!.uri.toString(),
+          element.prefix?.element.displayName));
     }
   }
   return importValues.map((e) => e.code).join("\n");
@@ -118,7 +116,7 @@ class AliasCounter extends TypeStringifier {
       importBuffer.add(AliasImport.type(type, prefix.prefix));
     }
     imports.add(AliasImport.type(type, prefix.prefix));
-    var element = type.element3!;
+    var element = type.element!;
     if (type is ParameterizedType && type.typeArguments.isNotEmpty) {
       return prefix.str(
           "${element.displayName}<${type.typeArguments.map((e) => ephemeral(e, importBuffer, prefixOverride)).join(",")}>");
@@ -133,7 +131,7 @@ class AliasCounter extends TypeStringifier {
   }
 
   @override
-  String getLibraryAlias(LibraryElement2 element) {
+  String getLibraryAlias(LibraryElement element) {
     var alias = getNextPrefix().prefix;
     imports.add(AliasImport.library(element, alias));
     return alias;
@@ -170,7 +168,7 @@ class CachedAliasCounter extends TypeStringifier {
       return type.displayName;
     }
     var prefix = getImportAlias(import);
-    var element = type.element3!;
+    var element = type.element!;
     if (type is ParameterizedType && type.typeArguments.isNotEmpty) {
       return prefix.str(
           "${element.displayName}<${type.typeArguments.map((e) => get(e)).join(",")}>");
@@ -185,7 +183,7 @@ class CachedAliasCounter extends TypeStringifier {
   }
 
   @override
-  String getLibraryAlias(LibraryElement2 element) {
+  String getLibraryAlias(LibraryElement element) {
     var importString = element.firstFragment.source.uri.toString();
     return getImportAlias(importString).prefix;
   }
@@ -203,7 +201,7 @@ String sqsLiteralEscape(String input) => input
 abstract class TypeStringifier {
   String get(DartType type, [AliasedPrefix? prefix]);
 
-  String getLibraryAlias(LibraryElement2 element);
+  String getLibraryAlias(LibraryElement element);
 
   /// Converts a compile-time evaluated [DartObject] to an aliased source
   /// representation where all types are incrementally aliased using this
@@ -219,16 +217,16 @@ abstract class TypeStringifier {
     if (reader.isBool) return reader.boolValue.toString();
     if (reader.isString) return "'${sqsLiteralEscape(reader.stringValue)}'";
 
-    if (reader.isSymbol) return "#${MirrorSystem.getName(reader.symbolValue)}";
+    if (reader.isSymbol) return "#${reader.objectValue.toSymbolValue()}";
     if (reader.isType) return get(reader.typeValue);
-    if (object.variable2 != null) {
-      var variable = object.variable2!;
+    if (object.variable != null) {
+      var variable = object.variable!;
       if (!variable.isPrivate) {
-        if (variable is TopLevelVariableElement2) {
-          return "${getLibraryAlias(variable.library2)}.${variable.displayName}";
-        } else if (variable is FieldElement2) {
+        if (variable is TopLevelVariableElement) {
+          return "${getLibraryAlias(variable.library)}.${variable.displayName}";
+        } else if (variable is FieldElement) {
           var interfaceElement =
-              variable.enclosingElement2 as InterfaceElement2;
+              variable.enclosingElement as InterfaceElement;
           return "${get(interfaceElement.thisType)}.${variable.displayName}";
         }
       } else {
@@ -250,11 +248,11 @@ abstract class TypeStringifier {
 
     // Handle functions
     if (object.type is analyzer_type.FunctionType) {
-      var function = object.toFunctionValue2()!;
+      var function = object.toFunctionValue()!;
       if (function is TopLevelFunctionElement) {
-        return "${getLibraryAlias(function.library2)}.${function.displayName}";
-      } else if (function is MethodElement2) {
-        var classElement = function.enclosingElement2 as ClassElement2;
+        return "${getLibraryAlias(function.library)}.${function.displayName}";
+      } else if (function is MethodElement) {
+        var classElement = function.enclosingElement as ClassElement;
         return "${get(classElement.thisType)}.${function.displayName}";
       } else {
         log.severe(

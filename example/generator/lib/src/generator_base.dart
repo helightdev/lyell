@@ -27,7 +27,7 @@ class TestBuilder extends Builder {
     await tryInitialize(buildStep);
     for (var clazz in reader.classes.where((element) => element.documentationComment?.contains("@@Marker") ?? false)) {
       // Example for generating type tokens
-      for (var element in clazz.fields2) {
+      for (var element in clazz.fields) {
         var token = await getAssociatedTypeToken(element.type, buildStep);
         codeBuffer.writeln("const \$${clazz.displayName}_${element.displayName} = ${token.prefixedCodeWithAliasedTypes(cachedCounter)};");
         codeBuffer.writeln("final \$${clazz.displayName}_${element.displayName}_aliased = ${cachedCounter.get(element.type)};");
@@ -37,7 +37,7 @@ class TestBuilder extends Builder {
         log.info("${clazz.displayName}.${element.displayName}: $serialized, $deserialized");
       }
 
-      if (clazz.typeParameters2.isNotEmpty) {
+      if (clazz.typeParameters.isNotEmpty) {
         codeBuffer.writeln("const \$${clazz.displayName}_gen = ${cachedCounter.get(clazz.thisType)};");
       }
 

@@ -1,4 +1,4 @@
-import 'package:analyzer/dart/element/element2.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
@@ -23,7 +23,7 @@ void _serializeType(DartType type, ByteBuf buffer) {
     buffer.writeLPString(import);
   }
   var fallbackName = type.displayName;
-  buffer.writeLPString(type.element3?.displayName ?? fallbackName);
+  buffer.writeLPString(type.element?.displayName ?? fallbackName);
   if (type is ParameterizedType && type.typeArguments.isNotEmpty) {
     buffer.writeByte(type.typeArguments.length);
     for (var value in type.typeArguments) {
@@ -40,7 +40,7 @@ Future<DartType> _deserializeType(ByteBuf buffer, BuildStep step) async {
     import = buffer.readLPString();
   }
 
-  LibraryElement2 library;
+  LibraryElement library;
   if (import != null) {
     library = await getLibrary(import, step);
   } else {
@@ -55,7 +55,7 @@ Future<DartType> _deserializeType(ByteBuf buffer, BuildStep step) async {
   if (name == "void" && import == null) {
     return library.typeProvider.voidType;
   }
-  InterfaceElement2? type = library.getClass2(name);
+  InterfaceElement? type = library.getClass(name);
   if (type == null) throw Exception("Type $name not found in library $import");
   if (paramCount == 0) return type.thisType;
   var params = <DartType>[];

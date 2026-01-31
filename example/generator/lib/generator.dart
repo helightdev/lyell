@@ -1,13 +1,13 @@
 /// Support for doing something awesome.
 ///
 /// More dartdocs go here.
-library generator;
+library;
 
 import 'package:build/build.dart';
-import 'package:generator/src/subject.dart';
 import 'generator.dart';
 
 export 'src/generator_base.dart';
+export 'src/subject.dart';
 
 
 Builder testBuilder(BuilderOptions options) => TestBuilder();
